@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable } from '@hello-pangea/dnd';
 import { Calendar, Tag, CheckSquare } from 'lucide-react';
 import type { Database } from '../../lib/database.types';
 

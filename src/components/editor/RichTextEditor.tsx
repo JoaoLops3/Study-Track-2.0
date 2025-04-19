@@ -1,12 +1,5 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Document from '@tiptap/extension-document';
-import Paragraph from '@tiptap/extension-paragraph';
-import Text from '@tiptap/extension-text';
-import Heading from '@tiptap/extension-heading';
-import BulletList from '@tiptap/extension-bullet-list';
-import OrderedList from '@tiptap/extension-ordered-list';
-import ListItem from '@tiptap/extension-list-item';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import Highlight from '@tiptap/extension-highlight';
@@ -27,20 +20,11 @@ interface RichTextEditorProps {
 const RichTextEditor = ({ initialContent, onChange, placeholder = 'Write something...' }: RichTextEditorProps) => {
   const editor = useEditor({
     extensions: [
-      Document,
-      Paragraph,
-      Text,
       StarterKit.configure({
-        document: false,
-        paragraph: false,
-        text: false,
+        heading: {
+          levels: [1, 2, 3],
+        },
       }),
-      Heading.configure({
-        levels: [1, 2, 3],
-      }),
-      BulletList,
-      OrderedList,
-      ListItem,
       TaskList,
       TaskItem.configure({
         nested: true,
