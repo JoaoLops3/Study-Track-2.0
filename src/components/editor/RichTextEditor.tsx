@@ -24,6 +24,14 @@ const RichTextEditor = ({ initialContent, onChange, placeholder = 'Write somethi
         heading: {
           levels: [1, 2, 3],
         },
+        bulletList: {
+          keepMarks: true,
+          keepAttributes: false,
+        },
+        orderedList: {
+          keepMarks: true,
+          keepAttributes: false,
+        },
       }),
       TaskList,
       TaskItem.configure({
@@ -38,7 +46,20 @@ const RichTextEditor = ({ initialContent, onChange, placeholder = 'Write somethi
         placeholder,
       }),
     ],
-    content: initialContent,
+    content: initialContent || {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: placeholder,
+            },
+          ],
+        },
+      ],
+    },
     onUpdate: ({ editor }) => {
       onChange(editor.getJSON());
     },
