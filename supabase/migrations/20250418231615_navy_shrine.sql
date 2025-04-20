@@ -96,10 +96,10 @@ CREATE POLICY "Users can view boards they are members of"
   ON boards
   FOR SELECT
   USING (
-    id IN (
-      SELECT board_id 
-      FROM board_members 
-      WHERE user_id = auth.uid()
+    EXISTS (
+      SELECT 1 FROM board_members 
+      WHERE board_id = boards.id 
+      AND user_id = auth.uid()
     )
   );
 

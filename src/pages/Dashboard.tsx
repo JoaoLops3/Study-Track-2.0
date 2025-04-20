@@ -4,6 +4,7 @@ import { Plus, Folder, File, Calendar, Users, Settings } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import type { Database } from '../lib/database.types';
+import toast from 'react-hot-toast';
 
 type Board = Database['public']['Tables']['boards']['Row'];
 type Page = Database['public']['Tables']['pages']['Row'];
@@ -25,6 +26,8 @@ const Dashboard = () => {
         setIsLoading(true);
         
         try {
+          console.log('Fetching boards for user:', user.id);
+          
           // Fetch recent boards
           const { data: boardsData, error: boardsError } = await supabase
             .from('boards')
@@ -33,7 +36,13 @@ const Dashboard = () => {
             .order('created_at', { ascending: false })
             .limit(6);
             
-          if (boardsError) throw boardsError;
+          if (boardsError) {
+            console.error('Error fetching boards:', boardsError);
+            toast.error('Erro ao carregar boards. Por favor, tente novamente.');
+            throw boardsError;
+          }
+          
+          console.log('Boards fetched:', boardsData?.length || 0);
           setRecentBoards(boardsData || []);
           
           // Fetch recent pages
@@ -44,17 +53,27 @@ const Dashboard = () => {
             .order('created_at', { ascending: false })
             .limit(6);
             
-          if (pagesError) throw pagesError;
+          if (pagesError) {
+            console.error('Error fetching pages:', pagesError);
+            toast.error('Erro ao carregar páginas. Por favor, tente novamente.');
+            throw pagesError;
+          }
+          
+          console.log('Pages fetched:', pagesData?.length || 0);
           setRecentPages(pagesData || []);
           
-        } catch (error) {
+        } catch (error: any) {
           console.error('Error fetching user content:', error);
+          toast.error('Erro ao carregar conteúdo. Por favor, tente novamente.');
         } finally {
           setIsLoading(false);
         }
       };
       
       fetchUserContent();
+    } else {
+      console.log('No user found, skipping fetch');
+      setIsLoading(false);
     }
   }, [user]);
 

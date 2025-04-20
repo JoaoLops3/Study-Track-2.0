@@ -21,9 +21,6 @@ const RichTextEditor = ({ initialContent, onChange, placeholder = 'Write somethi
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        document: false,
-        paragraph: false,
-        text: false,
         heading: {
           levels: [1, 2, 3],
         },
